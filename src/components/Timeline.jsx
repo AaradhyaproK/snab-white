@@ -63,6 +63,7 @@ export default function Timeline() {
   const trackRef = useRef(null);
   const trayRef = useRef(null);
   const [translateX, setTranslateX] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -86,15 +87,19 @@ export default function Timeline() {
       const trackHeight = trackRect.height;
       const viewportHeight = window.innerHeight;
 
-      // Calculate current scroll progress ratio inside the vertical track
+      // Calculate current scroll progress ratio inside the vertical track [0, 1]
       let progress = -trackTop / (trackHeight - viewportHeight);
       progress = Math.max(0, Math.min(1, progress));
 
       // Calculate absolute horizontal offset translate pixels
       const trayWidth = trayRef.current.scrollWidth;
-      const maxTranslate = trayWidth - window.innerWidth + 160; // Include left & right padding offset
+      const maxTranslate = trayWidth - window.innerWidth + 160;
 
       setTranslateX(progress * Math.max(0, maxTranslate));
+
+      // Map progress to steps index (0 to 7) to determine which is active
+      const activeIdx = Math.min(Math.max(Math.round(progress * (steps.length - 1)), 0), steps.length - 1);
+      setActiveIndex(activeIdx);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -149,25 +154,73 @@ export default function Timeline() {
           className="horizontal-scroll-tray"
           style={{ transform: `translate3d(-${translateX}px, 0, 0)` }}
         >
-          {steps.map((step, idx) => (
-            <div className="process-card horizontal-card" key={idx}>
-              <div className="process-card-header">
-                <span className="process-card-tag">{step.tag}</span>
-                <span className="process-card-number">{step.phase}</span>
+          {steps.map((step, idx) => {
+            const isActive = idx === activeIndex;
+            return (
+              <div 
+                className="process-card horizontal-card" 
+                key={idx}
+                style={{
+                  borderColor: isActive ? '#09543F' : 'var(--color-border)',
+                  boxShadow: isActive ? '0 12px 30px rgba(9, 84, 63, 0.08)' : '0 4px 15px var(--color-shadow)',
+                  transform: isActive ? 'scale(1.02)' : 'scale(1)',
+                  transition: 'all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)',
+                  backgroundColor: '#FFFFFF'
+                }}
+              >
+                <div className="process-card-header">
+                  <span 
+                    className="process-card-tag"
+                    style={{
+                      color: isActive ? '#09543F' : 'var(--color-text-muted)',
+                      fontWeight: isActive ? '700' : '500',
+                      transition: 'color 0.4s ease'
+                    }}
+                  >
+                    {step.tag}
+                  </span>
+                  <span 
+                    className="process-card-number"
+                    style={{
+                      color: isActive ? '#09543F' : 'rgba(17, 27, 24, 0.15)',
+                      textShadow: isActive ? '0 0 16px rgba(9, 84, 63, 0.15)' : 'none',
+                      transform: isActive ? 'scale(1.15) translate3d(0, -2px, 0)' : 'scale(1)',
+                      transition: 'all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)',
+                      display: 'inline-block'
+                    }}
+                  >
+                    {step.phase}
+                  </span>
+                </div>
+                <h3 
+                  className="process-card-title"
+                  style={{
+                    color: isActive ? '#09543F' : 'var(--color-text-main)',
+                    transition: 'color 0.4s ease'
+                  }}
+                >
+                  {step.title}
+                </h3>
+                <p className="process-card-desc">{step.desc}</p>
+                <div className="process-card-divider"></div>
+                <ul className="process-card-list">
+                  {step.bullets.map((bullet, bIdx) => (
+                    <li key={bIdx} className="process-card-list-item">
+                      <span 
+                        className="process-card-bullet-dot"
+                        style={{
+                          backgroundColor: isActive ? '#09543F' : 'var(--color-text-muted)',
+                          transform: isActive ? 'scale(1.3)' : 'scale(1)',
+                          transition: 'all 0.4s ease'
+                        }}
+                      ></span>
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h3 className="process-card-title">{step.title}</h3>
-              <p className="process-card-desc">{step.desc}</p>
-              <div className="process-card-divider"></div>
-              <ul className="process-card-list">
-                {step.bullets.map((bullet, bIdx) => (
-                  <li key={bIdx} className="process-card-list-item">
-                    <span className="process-card-bullet-dot"></span>
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
