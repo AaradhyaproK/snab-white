@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import logoImg from '../assets/snab-nobg.png';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -8,15 +9,7 @@ export default function Navbar() {
     <header className={`navbar ${isMenuOpen ? 'mobile-active' : ''}`}>
       <div className="navbar-container">
         <Link to="/" className="logo" aria-label="SNAB Innovations Home" onClick={() => setIsMenuOpen(false)}>
-          <svg className="logo-icon" width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="8" fill="#111B18"/>
-            <path d="M10 22L16 16M16 16L22 22M16 16V10M16 10L22 10" stroke="#E6F2ED" strokeWidth="2" strokeLinecap="round"/>
-            <circle cx="16" cy="16" r="3.5" fill="#09543F" stroke="#FFFFFF" strokeWidth="1.5"/>
-            <circle cx="10" cy="22" r="2.5" fill="#FFFFFF"/>
-            <circle cx="22" cy="22" r="2.5" fill="#FFFFFF"/>
-            <circle cx="16" cy="10" r="2.5" fill="#FFFFFF"/>
-            <circle cx="22" cy="10" r="1.5" fill="#09543F"/>
-          </svg>
+          <img src={logoImg} className="logo-icon" alt="SNAB Innovations Logo" width="32" height="32" style={{ objectFit: 'contain' }} />
           <span className="logo-text" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>snab</span>
         </Link>
         

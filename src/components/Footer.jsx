@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logoImg from '../assets/snab-nobg.png';
 
 export default function Footer() {
   return (
@@ -10,14 +11,7 @@ export default function Footer() {
           {/* Logo and Tagline Column */}
           <div className="footer-logo-side">
             <Link to="/" className="logo" style={{ color: '#FFFFFF' }}>
-              <svg className="logo-icon" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="32" height="32" rx="8" fill="#FFFFFF"/>
-                <path d="M10 22L16 16M16 16L22 22M16 16V10M16 10L22 10" stroke="#111B18" strokeWidth="2" strokeLinecap="round"/>
-                <circle cx="16" cy="16" r="3.5" fill="#09543F" stroke="#111B18" strokeWidth="1.5"/>
-                <circle cx="10" cy="22" r="2.5" fill="#111B18"/>
-                <circle cx="22" cy="22" r="2.5" fill="#111B18"/>
-                <circle cx="16" cy="10" r="2.5" fill="#111B18"/>
-              </svg>
+              <img src={logoImg} className="logo-icon" alt="SNAB Innovations Logo" width="30" height="30" style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
               <span className="logo-text" style={{ color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>snab</span>
             </Link>
             <p className="footer-tagline">
