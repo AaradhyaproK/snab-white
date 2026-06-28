@@ -2050,8 +2050,51 @@ button, input, select, textarea {
   .footer-watermark {
     bottom: -20px;
     right: -15px;
-    font-size: 20vw;
   }
+}
+
+/* ==========================================
+   HORIZONTAL TIMELINE SCROLL STYLING
+   ========================================== */
+.horizontal-scroll-track {
+  height: 420vh;
+  position: relative;
+  background-color: transparent;
+}
+
+.sticky-scroll-container {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.horizontal-header {
+  max-width: 1200px;
+  margin: 0 auto 32px !important;
+  padding: 0 80px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.horizontal-scroll-tray {
+  display: flex;
+  gap: 36px;
+  padding: 0 80px;
+  width: max-content;
+  will-change: transform;
+  transition: transform 0.15s cubic-bezier(0.1, 0.8, 0.25, 1);
+}
+
+.horizontal-card {
+  width: 380px !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box;
+  margin: 0 !important;
 }
 
 

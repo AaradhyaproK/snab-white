@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import Timeline from '../components/Timeline';
+import InteractiveBlueprint from '../components/InteractiveBlueprint';
 import Testimonials from '../components/Testimonials';
 import FAQ from '../components/FAQ';
 
@@ -10,6 +11,9 @@ export default function Home() {
     <>
       <Hero />
       <Timeline />
+      
+      {/* Interactive Architecture Simulator */}
+      <InteractiveBlueprint />
       
       {/* Dynamic Industries Served Segment */}
       <section className="industries-section">
