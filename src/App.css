@@ -2281,4 +2281,32 @@ button, input, select, textarea {
   color: #2563EB !important;
 }
 
+/* ==========================================
+   RESPONSIVE LEGAL PAGE LAYOUTS
+   ========================================== */
+.legal-split-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 48px;
+  align-items: flex-start;
+}
+
+.legal-sidebar {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@media (max-width: 1024px) {
+  .legal-split-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .legal-sidebar {
+    display: none !important;
+  }
+}
+
 

@@ -79,10 +79,10 @@ export default function PrivacyPolicy() {
         </div>
 
         {/* Split Columns Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '48px', alignItems: 'flex-start' }} className="why-grid">
+        <div className="legal-split-layout">
           
           {/* Left Column: Sticky Outline Sidebar */}
-          <div style={{ position: 'sticky', top: '100px', display: 'flex', flexDirection: 'column', gap: '8px' }} className="desktop-only">
+          <div className="legal-sidebar">
             <h4 style={{ fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--color-text-muted)', marginBottom: '12px', paddingLeft: '12px' }}>
               Policy Sections
             </h4>
