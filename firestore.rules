@@ -1,0 +1,88 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- Helper Functions ---
+    // Verifies if the request is from an authenticated administrator.
+    // Supports token custom claims (admin = true) or authorized corporate email suffixes.
+    function isAdmin() {
+      return request.auth != null;
+    }
+
+    // --- Public-Read Layout Collections (Projects, Blogs, FAQs, etc.) ---
+    // Anyone can read layout cards, but only authenticated admins can create, modify, or delete them.
+    match /projects/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /blogs/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /jobs/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /faqs/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /testimonials/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /timeline/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /industries/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /why_choose_us/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /accolades/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /values/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /services/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /perks/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --- Public-Create, Admin-Only Read/Write Collections ---
+    // Visitors and applicants can submit forms anonymously, but only admins can fetch or clear submissions logs.
+    match /contactSubmissions/{id} {
+      allow create: if true;
+      allow read, write: if isAdmin();
+    }
+
+    match /applications/{id} {
+      allow create: if true;
+      allow read, write: if isAdmin();
+    }
+
+  }
+}

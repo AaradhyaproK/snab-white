@@ -1,112 +1,152 @@
 import React, { useState } from 'react';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import { useCollection } from '../hooks/useCollection';
+
+const DEFAULT_PERKS = [
+  {
+    title: "Remote-First Work",
+    desc: "Collaborate with talented professionals from anywhere in the world. We offer complete location flexibility."
+  },
+  {
+    title: "Learning Budget",
+    desc: "Annual allowance for technical books, online courses, certification exams, and tech conferences."
+  },
+  {
+    title: "Flexible Hours",
+    desc: "We prioritize outputs over inputs. Configure your working schedule to align with your personal productivity peaks."
+  },
+  {
+    title: "Modern Tech Stack",
+    desc: "No technical debt holding you back. Build platforms with modern tools like Next.js, FastAPI, Kubernetes, and LangChain."
+  }
+];
+
+const DEFAULT_JOBS = [
+  {
+    title: "AI Research Engineer",
+    location: "Remote (Global)",
+    type: "Full-Time",
+    salary: "$120,000 – $150,000 / year",
+    tags: ["AI & ML", "Python", "LangChain", "LLMs"]
+  },
+  {
+    title: "Senior Full-Stack Developer",
+    location: "Remote (Global)",
+    type: "Full-Time",
+    salary: "$90,000 – $120,000 / year",
+    tags: ["Software", "React", "Node.js", "PostgreSQL"]
+  },
+  {
+    title: "UI/UX Product Designer",
+    location: "Remote (Global)",
+    type: "Full-Time",
+    salary: "$80,000 – $100,000 / year",
+    tags: ["Design", "Figma", "Prototyping", "User Research"]
+  },
+  {
+    title: "DevOps Solution Architect",
+    location: "Remote (Global)",
+    type: "Full-Time",
+    salary: "$110,000 – $135,000 / year",
+    tags: ["Cloud", "AWS", "Kubernetes", "Terraform"]
+  },
+  {
+    title: "AI Product Manager",
+    location: "Remote (Global)",
+    type: "Full-Time",
+    salary: "$115,000 – $140,000 / year",
+    tags: ["Product", "Agile", "AI Strategy", "Analytics"]
+  },
+  {
+    title: "QA Automation Engineer",
+    location: "Remote (Global)",
+    type: "Full-Time",
+    salary: "$75,000 – $95,000 / year",
+    tags: ["Testing", "Selenium", "Cypress", "CI/CD"]
+  },
+  {
+    title: "Security & Compliance Specialist",
+    location: "Remote (Global)",
+    type: "Full-Time",
+    salary: "$95,000 – $120,000 / year",
+    tags: ["Cybersec", "SOC2", "HIPAA", "Audits"]
+  },
+  {
+    title: "Technical Writer",
+    location: "Remote (Global)",
+    type: "Part-Time",
+    salary: "$45,000 – $60,000 / year",
+    tags: ["Content", "Documentation", "API Guides", "Markdown"]
+  }
+];
+
+const renderPerkIcon = (title) => {
+  const normTitle = title?.toLowerCase() || '';
+  if (normTitle.includes('remote') || normTitle.includes('work') || normTitle.includes('location')) {
+    return (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    );
+  }
+  if (normTitle.includes('learning') || normTitle.includes('budget') || normTitle.includes('course')) {
+    return (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    );
+  }
+  if (normTitle.includes('hour') || normTitle.includes('flexible') || normTitle.includes('time')) {
+    return (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+};
 
 export default function Careers() {
   const [applyingJob, setApplyingJob] = useState(null);
   const [resumeSubmitted, setResumeSubmitted] = useState(false);
+  const [isApplying, setIsApplying] = useState(false);
+  const [applyError, setApplyError] = useState('');
+
+  // Form states
   const [applicantName, setApplicantName] = useState('');
+  const [applicantEmail, setApplicantEmail] = useState('');
+  const [resumeLink, setResumeLink] = useState('');
+  const [coverLetter, setCoverLetter] = useState('');
 
-  const perks = [
-    {
-      title: "Remote-First Work",
-      desc: "Collaborate with talented professionals from anywhere in the world. We offer complete location flexibility.",
-      icon: (
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      )
-    },
-    {
-      title: "Learning Budget",
-      desc: "Annual allowance for technical books, online courses, certification exams, and tech conferences.",
-      icon: (
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      )
-    },
-    {
-      title: "Flexible Hours",
-      desc: "We prioritize outputs over inputs. Configure your working schedule to align with your personal productivity peaks.",
-      icon: (
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      )
-    },
-    {
-      title: "Modern Tech Stack",
-      desc: "No technical debt holding you back. Build platforms with modern tools like Next.js, FastAPI, Kubernetes, and LangChain.",
-      icon: (
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      )
-    }
-  ];
+  const { data: perks } = useCollection("perks", DEFAULT_PERKS);
+  const { data: jobs } = useCollection("jobs", DEFAULT_JOBS);
 
-  const jobs = [
-    {
-      title: "AI Research Engineer",
-      location: "Remote (Global)",
-      type: "Full-Time",
-      salary: "$120,000 – $150,000 / year",
-      tags: ["AI & ML", "Python", "LangChain", "LLMs"]
-    },
-    {
-      title: "Senior Full-Stack Developer",
-      location: "Remote (Global)",
-      type: "Full-Time",
-      salary: "$90,000 – $120,000 / year",
-      tags: ["Software", "React", "Node.js", "PostgreSQL"]
-    },
-    {
-      title: "UI/UX Product Designer",
-      location: "Remote (Global)",
-      type: "Full-Time",
-      salary: "$80,000 – $100,000 / year",
-      tags: ["Design", "Figma", "Prototyping", "User Research"]
-    },
-    {
-      title: "DevOps Solution Architect",
-      location: "Remote (Global)",
-      type: "Full-Time",
-      salary: "$110,000 – $135,000 / year",
-      tags: ["Cloud", "AWS", "Kubernetes", "Terraform"]
-    },
-    {
-      title: "AI Product Manager",
-      location: "Remote (Global)",
-      type: "Full-Time",
-      salary: "$115,000 – $140,000 / year",
-      tags: ["Product", "Agile", "AI Strategy", "Analytics"]
-    },
-    {
-      title: "QA Automation Engineer",
-      location: "Remote (Global)",
-      type: "Full-Time",
-      salary: "$75,000 – $95,000 / year",
-      tags: ["Testing", "Selenium", "Cypress", "CI/CD"]
-    },
-    {
-      title: "Security & Compliance Specialist",
-      location: "Remote (Global)",
-      type: "Full-Time",
-      salary: "$95,000 – $120,000 / year",
-      tags: ["Cybersec", "SOC2", "HIPAA", "Audits"]
-    },
-    {
-      title: "Technical Writer",
-      location: "Remote (Global)",
-      type: "Part-Time",
-      salary: "$45,000 – $60,000 / year",
-      tags: ["Content", "Documentation", "API Guides", "Markdown"]
-    }
-  ];
-
-  const handleApplySubmit = (e) => {
+  const handleApplySubmit = async (e) => {
     e.preventDefault();
-    setResumeSubmitted(true);
+    setIsApplying(true);
+    setApplyError('');
+    try {
+      await addDoc(collection(db, "applications"), {
+        jobTitle: applyingJob.title,
+        fullName: applicantName,
+        email: applicantEmail,
+        resumeLink: resumeLink,
+        coverLetter: coverLetter,
+        appliedAt: new Date().toISOString()
+      });
+      setResumeSubmitted(true);
+    } catch (err) {
+      console.error("Error writing application to Firestore:", err);
+      setApplyError(err.message || 'Failed to submit application. Please try again.');
+    } finally {
+      setIsApplying(false);
+    }
   };
 
   return (
@@ -119,8 +159,8 @@ export default function Careers() {
       {/* Perks grid */}
       <div className="perks-grid">
         {perks.map((p, idx) => (
-          <div className="perk-card" key={idx}>
-            <div className="perk-icon">{p.icon}</div>
+          <div className="perk-card" key={p.id || idx}>
+            <div className="perk-icon">{renderPerkIcon(p.title)}</div>
             <h3 className="perk-title">{p.title}</h3>
             <p className="perk-desc">{p.desc}</p>
           </div>
@@ -134,13 +174,13 @@ export default function Careers() {
 
       <div className="jobs-list">
         {jobs.map((job, idx) => (
-          <div className="job-card" key={idx}>
+          <div className="job-card" key={job.id || idx}>
             <div className="job-info-col">
               <h3 className="job-title">{job.title}</h3>
               <div className="job-tags-row">
                 <span className="job-pill job-pill-accent">{job.location}</span>
                 <span className="job-pill">{job.type}</span>
-                {job.tags.map((tag, tIdx) => (
+                {job.tags && job.tags.map((tag, tIdx) => (
                   <span className="job-pill" key={tIdx}>{tag}</span>
                 ))}
               </div>
@@ -153,6 +193,11 @@ export default function Careers() {
                 onClick={() => {
                   setApplyingJob(job);
                   setResumeSubmitted(false);
+                  setApplicantName('');
+                  setApplicantEmail('');
+                  setResumeLink('');
+                  setCoverLetter('');
+                  setApplyError('');
                 }}
               >
                 Apply Now
@@ -221,7 +266,7 @@ export default function Careers() {
                 <div className="contact-icon" style={{ margin: '0 auto 20px', width: '60px', height: '60px' }}>✓</div>
                 <h3 className="process-item-title" style={{ fontSize: '1.5rem', marginBottom: '12px' }}>Application Received!</h3>
                 <p className="grey-text">
-                  Thank you, <strong>{applicantName}</strong>. Your resume application for the <strong>{applyingJob.title}</strong> role has been successfully registered. Our talent acquisition team will reach out to you within 3 business days.
+                  Thank you, <strong>{applicantName}</strong>. Your resume application for the <strong>{applyingJob.title}</strong> role has been successfully registered. Our talent acquisition team will review your application soon.
                 </p>
               </div>
             ) : (
@@ -249,6 +294,8 @@ export default function Careers() {
                     type="email" 
                     id="applicantEmail"
                     required
+                    value={applicantEmail}
+                    onChange={(e) => setApplicantEmail(e.target.value)}
                     placeholder="jane@example.com"
                   />
                 </div>
@@ -260,6 +307,8 @@ export default function Careers() {
                     type="url" 
                     id="resumeLink"
                     required
+                    value={resumeLink}
+                    onChange={(e) => setResumeLink(e.target.value)}
                     placeholder="https://linkedin.com/in/janedoe"
                   />
                 </div>
@@ -270,12 +319,20 @@ export default function Careers() {
                     className="form-input"
                     id="coverLetter"
                     rows="3"
+                    value={coverLetter}
+                    onChange={(e) => setCoverLetter(e.target.value)}
                     placeholder="Briefly state your experience with this tech stack..."
                   ></textarea>
                 </div>
 
-                <button className="btn btn-primary" type="submit" style={{ width: '100%', marginTop: '12px' }}>
-                  Submit Application <span className="arrow-right">→</span>
+                {applyError && (
+                  <div style={{ color: '#EF4444', fontSize: '0.85rem', marginBottom: '12px', fontWeight: '600' }}>
+                    {applyError}
+                  </div>
+                )}
+
+                <button className="btn btn-primary" type="submit" disabled={isApplying} style={{ width: '100%', marginTop: '12px', opacity: isApplying ? 0.7 : 1 }}>
+                  {isApplying ? 'Submitting Application...' : 'Submit Application'} <span className="arrow-right">→</span>
                 </button>
               </form>
             )}

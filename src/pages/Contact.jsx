@@ -1,8 +1,39 @@
-import React from 'react';
-import { useForm, ValidationError } from '@formspree/react';
+import React, { useState } from 'react';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 export default function Contact() {
-  const [state, handleSubmit] = useForm("xojolqky");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const name = e.target.elements.name.value;
+      const email = e.target.elements.email.value;
+      const projectType = e.target.elements.projectType.value;
+      const message = e.target.elements.message.value;
+
+      await addDoc(collection(db, "contactSubmissions"), {
+        name,
+        email,
+        projectType,
+        message,
+        createdAt: new Date().toISOString()
+      });
+
+      setFormSubmitted(true);
+    } catch (err) {
+      console.error("Error saving contact submission:", err);
+      setSubmitError(err.message || "Failed to submit message. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section className="contact-section" id="contact">
@@ -50,58 +81,28 @@ export default function Contact() {
           <div className="contact-item">
             <div className="contact-icon">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" strokeLinecap="round" strokeLinejoin="round"/>
-                <circle cx="12" cy="9" r="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="12" cy="10" r="3" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
             <div>
               <span className="contact-label">Office Address</span>
-              <div className="contact-value" style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
-                Office No. 5 or 6, Janki Plaza,<br />
-                Dwarka Circle, Nashik - 422006
+              <div className="contact-value">
+                Office No. 5/6, Janki Plaza, Dwarka Circle, Nashik – 422006
               </div>
             </div>
           </div>
 
-          <div className="contact-item" style={{ marginBottom: '0' }}>
-            <div className="contact-icon">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <div>
-              <span className="contact-label">Business Hours</span>
-              <div className="contact-value">Monday – Friday: 9:00 AM – 6:00 PM</div>
-            </div>
-          </div>
-
-          {/* Styled Google Maps iframe integrated according to the theme */}
-          <div 
-            className="glass-card" 
-            style={{ 
-              marginTop: '32px', 
-              borderRadius: '20px', 
-              overflow: 'hidden', 
-              border: '1px solid var(--color-border)',
-              height: '240px',
-              width: '100%',
-              position: 'relative'
-            }}
-          >
+          {/* Map Location */}
+          <div style={{ marginTop: '30px', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--color-border)', height: '220px' }}>
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d239.84197938085202!2d73.79708480301295!3d19.99243517548137!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bddeafd1b3f8a81%3A0xe6711c4d916b72e9!2sJanki%20Plaza!5e0!3m2!1sen!2sin!4v1782675410861!5m2!1sen!2sin" 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3749.1983050868205!2d73.79633887588047!3d19.99964172289658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bddeb2f4df6cf6f%3A0xc3c5f49e4918e7c!2sDwarka%20Circle%2C%20Nashik%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1719574510000!5m2!1sen!2sin" 
               width="100%" 
               height="100%" 
-              style={{ 
-                border: 0, 
-                filter: 'grayscale(1) contrast(1.05) opacity(0.9)', 
-                pointerEvents: 'auto',
-                display: 'block'
-              }} 
+              style={{ border: 0 }} 
               allowFullScreen="" 
               loading="lazy" 
-              referrerPolicy="strict-origin-when-cross-origin"
+              referrerPolicy="no-referrer-when-downgrade"
               title="SNAB Nashik Office Map Location"
             ></iframe>
           </div>
@@ -109,7 +110,7 @@ export default function Contact() {
 
         {/* Form Column */}
         <div>
-          {state.succeeded ? (
+          {formSubmitted ? (
             <div className="contact-form" style={{ textAlign: 'center', padding: '60px 40px' }}>
               <div className="contact-icon" style={{ margin: '0 auto 24px', width: '60px', height: '60px' }}>✓</div>
               <h3 className="process-detail-title">Request Submitted!</h3>
@@ -131,7 +132,6 @@ export default function Contact() {
                   required 
                   placeholder="John Doe"
                 />
-                <ValidationError prefix="Name" field="name" errors={state.errors} style={{ color: '#EF4444', fontSize: '0.8rem', marginTop: '4px' }} />
               </div>
 
               <div className="form-group">
@@ -144,7 +144,6 @@ export default function Contact() {
                   required 
                   placeholder="john@company.com"
                 />
-                <ValidationError prefix="Email" field="email" errors={state.errors} style={{ color: '#EF4444', fontSize: '0.8rem', marginTop: '4px' }} />
               </div>
 
               <div className="form-group">
@@ -174,22 +173,21 @@ export default function Contact() {
                   required
                   placeholder="Tell us about the project goals, timelines, and key integrations..."
                 ></textarea>
-                <ValidationError prefix="Message" field="message" errors={state.errors} style={{ color: '#EF4444', fontSize: '0.8rem', marginTop: '4px' }} />
               </div>
 
-              {state.errors && state.errors.length > 0 && (
+              {submitError && (
                 <div style={{ color: '#EF4444', fontSize: '0.85rem', marginBottom: '12px', fontWeight: '600' }}>
-                  There was a validation error submitting your request. Please check fields.
+                  {submitError}
                 </div>
               )}
 
               <button 
                 className="btn btn-primary" 
                 type="submit" 
-                disabled={state.submitting}
-                style={{ width: '100%', marginTop: '10px', opacity: state.submitting ? 0.7 : 1, cursor: state.submitting ? 'not-allowed' : 'pointer' }}
+                disabled={isSubmitting}
+                style={{ width: '100%', marginTop: '10px', opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
               >
-                {state.submitting ? 'Sending Request...' : 'Submit Request'} <span className="arrow-right">→</span>
+                {isSubmitting ? 'Sending Request...' : 'Submit Request'} <span className="arrow-right">→</span>
               </button>
             </form>
           )}

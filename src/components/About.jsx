@@ -1,14 +1,17 @@
 import React from 'react';
+import { useCollection } from '../hooks/useCollection';
+
+const DEFAULT_VALUES = [
+  "Innovation First",
+  "Customer Success",
+  "Transparency",
+  "Excellence",
+  "Continuous Learning",
+  "Long-Term Partnerships"
+];
 
 export default function About() {
-  const values = [
-    "Innovation First",
-    "Customer Success",
-    "Transparency",
-    "Excellence",
-    "Continuous Learning",
-    "Long-Term Partnerships"
-  ];
+  const { data: values } = useCollection("values", DEFAULT_VALUES);
 
   return (
     <section className="about-section" id="about">
@@ -43,12 +46,15 @@ export default function About() {
         <div className="about-values-side">
           <h3>Our Core Values</h3>
           <div className="values-grid">
-            {values.map((val, idx) => (
-              <div className="value-item" key={idx}>
-                <div className="value-check-icon">✓</div>
-                <span className="value-name">{val}</span>
-              </div>
-            ))}
+            {values.map((val, idx) => {
+              const name = typeof val === 'string' ? val : val.name || val.title;
+              return (
+                <div className="value-item" key={val.id || idx}>
+                  <div className="value-check-icon">✓</div>
+                  <span className="value-name">{name}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

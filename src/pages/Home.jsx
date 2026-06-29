@@ -6,8 +6,17 @@ import Ecosystem from '../components/Ecosystem';
 import InteractiveBlueprint from '../components/InteractiveBlueprint';
 import Testimonials from '../components/Testimonials';
 import FAQ from '../components/FAQ';
+import { useCollection } from '../hooks/useCollection';
+
+const DEFAULT_INDUSTRIES = [
+  "Healthcare", "Education", "Retail", "Manufacturing", "Logistics",
+  "Finance", "Real Estate", "Hospitality", "Startups", "Government",
+  "E-Commerce", "SaaS"
+];
 
 export default function Home() {
+  const { data: industries } = useCollection("industries", DEFAULT_INDUSTRIES);
+
   return (
     <>
       <Hero />
@@ -27,9 +36,10 @@ export default function Home() {
             Domain Expertise Across Diverse Sectors
           </h2>
           <div className="industries-grid">
-            {["Healthcare", "Education", "Retail", "Manufacturing", "Logistics", "Finance", "Real Estate", "Hospitality", "Startups", "Government", "E-Commerce", "SaaS"].map((ind, idx) => (
-              <span className="industry-pill" key={idx}>{ind}</span>
-            ))}
+            {industries.map((ind, idx) => {
+              const name = typeof ind === 'string' ? ind : ind.name || ind.title;
+              return <span className="industry-pill" key={idx}>{name}</span>;
+            })}
           </div>
         </div>
       </section>

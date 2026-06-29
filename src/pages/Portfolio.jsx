@@ -1,180 +1,178 @@
 import React from 'react';
+import { useCollection } from '../hooks/useCollection';
 
-export default function Portfolio() {
-  const projects = [
-    {
-      title: "AI Powered Lawyer Recommendation System",
-      desc: "Selected for Eureka 2025 at IIT Bombay and Runner-up in Startup Arena. Directs users to matched advocates based on case type and coordinates. Features AI analysis metrics and encrypted client-lawyer chat channels.",
-      tags: ["React JS", "Firebase Backend", "Eureka 2025", "Google Translator API"],
-      demo: "#",
-      github: "#",
-      icon: (
-        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#09543F" strokeWidth="1.5">
+const DEFAULT_PROJECTS = [
+  {
+    title: "AI Powered Lawyer Recommendation System",
+    desc: "Selected for Eureka 2025 at IIT Bombay and Runner-up in Startup Arena. Directs users to matched advocates based on case type and coordinates. Features AI analysis metrics and encrypted client-lawyer chat channels.",
+    tags: ["React JS", "Firebase Backend", "Eureka 2025", "Google Translator API"],
+    demo: "#",
+    github: "#",
+    iconType: "lawyer"
+  },
+  {
+    title: "NotaryXpert SaaS",
+    desc: "A specialized SaaS platform digitizing legal documentation and notary operations. Modernizes legal drafting to reduce paperwork latency by up to 90% using automated PDF generation and IOT fingerprint authentications.",
+    tags: ["React.js", "PHP Backend", "MySQL", "IOT Fingerprint Integration"],
+    demo: "https://notery.interviewxpert.in/",
+    iconType: "notary"
+  },
+  {
+    title: "AI Powered Interview Platform",
+    desc: "An advanced, remote technical screening platform designed to assess engineering candidates. Conducts real-time evaluations, video question feedback, coding assessment parsing, and automated ranking metrics.",
+    tags: ["Gemini API", "AssemblyAI", "React JS", "Firebase", "Cloudinary"],
+    demo: "https://interviewxpert.in",
+    brochure: "/brochure/Brocher-interviewxpert.pdf",
+    github: "#",
+    iconType: "interview"
+  },
+  {
+    title: "AI Automated Aptitude Result Platform",
+    desc: "A comprehensive grading and analysis engine compiling aptitude metrics, speed test data, and skills gap analysis dashboards for recruitment cohorts.",
+    tags: ["React JS", "FastAPI", "MongoDB", "ChartJS"],
+    demo: "https://result.interviewxpert.in",
+    iconType: "result"
+  },
+  {
+    title: "Dynamic Roommate Finder Portal",
+    desc: "An interactive rental network matching verified roommates based on budget, lifestyle traits, and location preferences.",
+    tags: ["React JS", "Node JS", "Express API", "Socket.io"],
+    demo: "https://roommate.interviewxpert.in",
+    iconType: "roommate"
+  },
+  {
+    title: "IEDC Sandip University Incubation Network",
+    desc: "The official platform for Innovation, Entrepreneurship, and Development Cell at Sandip University. Houses registration tools, hackathon timelines, and mentorship allocations.",
+    tags: ["HTML & CSS", "JavaScript", "BootStrap", "NodeJS"],
+    demo: "https://iedc.sandipuniversity.edu.in",
+    iconType: "iedc"
+  }
+];
+
+const renderProjectIcon = (iconType) => {
+  switch (iconType) {
+    case 'lawyer':
+      return (
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#09543F" strokeWidth="1.5">
           <path d="M12 2v20M17 5H7M19 8H5M12 5L8 10h8l-4-5z" strokeLinecap="round" strokeLinejoin="round"/>
           <path d="M4 17a3 3 0 003 3h10a3 3 0 003-3" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-      )
-    },
-    {
-      title: "NotaryXpert SaaS",
-      desc: "A specialized SaaS platform digitizing legal documentation and notary operations. Modernizes legal drafting to reduce paperwork latency by up to 90% using automated PDF generation and IOT fingerprint authentications.",
-      tags: ["React.js", "PHP Backend", "MySQL", "IOT Fingerprint Integration"],
-      demo: "https://notery.interviewxpert.in/",
-      icon: (
-        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#09543F" strokeWidth="1.5">
+      );
+    case 'notary':
+      return (
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#09543F" strokeWidth="1.5">
           <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" strokeLinecap="round" strokeLinejoin="round"/>
           <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-      )
-    },
-    {
-      title: "AI Powered Interview Platform",
-      desc: "An advanced, remote technical screening platform designed to assess engineering candidates. Conducts real-time evaluations, video question feedback, coding assessment parsing, and automated ranking metrics.",
-      tags: ["Gemini API", "AssemblyAI", "React JS", "Firebase", "Cloudinary"],
-      demo: "https://interviewxpert.in",
-      brochure: "/brochure/Brocher-interviewxpert.pdf",
-      github: "#",
-      icon: (
+      );
+    case 'interview':
+      return (
         <img 
           src="/brochure/logo-dark.png" 
           alt="InterviewXpert Logo" 
-          style={{ height: '48px', width: 'auto', objectFit: 'contain' }} 
+          style={{ width: '64px', height: '64px', objectFit: 'contain' }}
         />
-      )
-    },
-    {
-      title: "SPPU Bulk Result Analyzer",
-      desc: "An engineering automation script parsing thousands of raw university result sheets at once. Instantly generates toppers tracking, pass/fail matrices, class pointer averages, and exportable Excel dashboards.",
-      tags: ["Python Backend", "PyPDF Analysis", "Matplotlib Visuals", "Excel Export"],
-      demo: "#",
-      github: "#",
-      icon: (
-        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#09543F" strokeWidth="1.5">
-          <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" strokeLinecap="round" strokeLinejoin="round"/>
-          <rect x="8" y="2" width="8" height="4" rx="1" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M9 12h6M9 16h6" strokeLinecap="round" strokeLinejoin="round"/>
+      );
+    case 'result':
+      return (
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#09543F" strokeWidth="1.5">
+          <path d="M18 20V10M12 20V4M6 20v-6" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-      )
-    },
-    {
-      title: "Roommate Finder",
-      desc: "A matching application matching roommates based on age, habits, education, and hobbies. Integrates localized mapping services to suggest nearby verified student hostels and configurations.",
-      tags: ["React JS", "Matching Algorithm", "Location suger", "Hostel Map"],
-      demo: "#",
-      icon: (
-        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#09543F" strokeWidth="1.5">
-          <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" strokeLinecap="round" strokeLinejoin="round"/>
+      );
+    case 'roommate':
+      return (
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#09543F" strokeWidth="1.5">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="12" cy="13" r="3" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-      )
-    },
-    {
-      title: "IEDC Official Website",
-      desc: "The public interface and records hub for the Innovation and Entrepreneurship Development Cell. Directs startup applications, tracks project timelines, and lists incubation timelines.",
-      tags: ["React JS", "Vite Compiler", "Tailwind CSS"],
-      demo: "#",
-      icon: (
-        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#09543F" strokeWidth="1.5">
-          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round"/>
+      );
+    case 'iedc':
+      return (
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#09543F" strokeWidth="1.5">
+          <circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M8 12h8M12 8v8" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-      )
-    },
-    {
-      title: "Tech Guru Registration Platform",
-      desc: "Engineered a high-concurrency event registration system managing 4,000+ candidate submissions. Built optimized JSON storage buffers to scale request queues under massive traffic loads.",
-      tags: ["JavaScript Core", "JSON Storage Buffer", "High-Scale Traffic"],
-      demo: "#",
-      icon: (
-        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#09543F" strokeWidth="1.5">
-          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" strokeLinecap="round" strokeLinejoin="round"/>
-          <circle cx="9" cy="7" r="4" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" strokeLinecap="round" strokeLinejoin="round"/>
+      );
+    default:
+      return (
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#09543F" strokeWidth="1.5">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M8 21h8M12 17v4" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-      )
-    }
-  ];
+      );
+  }
+};
+
+export default function Portfolio() {
+  const { data: projects } = useCollection("projects", DEFAULT_PROJECTS);
 
   return (
     <section className="portfolio-section" id="portfolio">
-      <div className="section-title-wrapper">
+      <div className="section-title-wrapper" style={{ marginBottom: '56px', textAlign: 'center' }}>
         <span className="section-tag">Our Portfolio</span>
-        <h2 className="section-title">Success Stories of Impact and Innovation</h2>
+        <h2 className="section-title">Scale-Out Systems & Verified Products</h2>
       </div>
-      
-      <div className="portfolio-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))' }}>
+
+      <div className="portfolio-grid">
         {projects.map((proj, idx) => (
-          <div className="portfolio-card" key={idx}>
+          <div className="portfolio-card" key={proj.id || idx}>
             <div className="portfolio-art">
-              {proj.icon}
+              {renderProjectIcon(proj.iconType || 'tech')}
             </div>
+
             <div className="portfolio-content">
               <div>
                 <h3 className="portfolio-project-title">{proj.title}</h3>
                 <p className="portfolio-project-desc">{proj.desc}</p>
-              </div>
-              
-              <div className="scoring-tags">
-                {proj.tags.map((tag, tagIdx) => (
-                  <span className="tag" key={tagIdx}>{tag}</span>
-                ))}
+                
+                <div className="scoring-tags">
+                  {proj.tags && proj.tags.map((tag, tIdx) => (
+                    <span className="tag" key={tIdx}>{tag}</span>
+                  ))}
+                </div>
               </div>
 
-              {/* B2B Clean Typographic Action Links */}
-              <div style={{ display: 'flex', gap: '16px', marginTop: '16px', borderTop: '1px solid var(--color-border)', paddingTop: '16px' }}>
-                {proj.demo && (
-                  <a 
-                    href={proj.demo} 
-                    target={proj.demo.startsWith('http') ? "_blank" : undefined}
-                    rel={proj.demo.startsWith('http') ? "noopener noreferrer" : undefined}
-                    style={{ 
-                      fontSize: '0.8rem', 
-                      color: '#09543F', 
-                      textDecoration: 'none', 
-                      fontWeight: '700',
-                      transition: 'opacity 0.2s'
-                    }}
-                    onMouseEnter={(e) => e.target.style.opacity = '0.7'}
-                    onMouseLeave={(e) => e.target.style.opacity = '1'}
-                  >
-                    Live Demo &rarr;
-                  </a>
-                )}
-                {proj.github && (
-                  <a 
-                    href={proj.github} 
-                    style={{ 
-                      fontSize: '0.8rem', 
-                      color: 'var(--color-text-muted)', 
-                      textDecoration: 'none', 
-                      fontWeight: '700',
-                      transition: 'opacity 0.2s'
-                    }}
-                    onMouseEnter={(e) => e.target.style.opacity = '0.7'}
-                    onMouseLeave={(e) => e.target.style.opacity = '1'}
-                  >
-                    GitHub Code &↗;
-                  </a>
-                )}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '24px', borderTop: '1px solid var(--color-border)', paddingTop: '16px' }}>
+                <div style={{ display: 'flex', gap: '16px' }}>
+                  {proj.github && proj.github !== "#" && (
+                    <a href={proj.github} className="portfolio-action-btn" target="_blank" rel="noopener noreferrer" title="View Source" style={{ color: '#6B7280', transition: 'color 0.2s' }}>
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </a>
+                  )}
+                  {proj.demo && proj.demo !== "#" && (
+                    <a href={proj.demo} className="portfolio-action-btn" target="_blank" rel="noopener noreferrer" title="Live Demo" style={{ color: '#09543F', transition: 'color 0.2s' }}>
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </a>
+                  )}
+                </div>
+
                 {proj.brochure && (
                   <a 
                     href={proj.brochure} 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ 
-                      fontSize: '0.8rem', 
-                      color: '#2563EB', 
-                      textDecoration: 'none', 
+                    download 
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      color: '#09543F',
+                      textDecoration: 'none',
                       fontWeight: '700',
+                      fontSize: '0.8rem',
                       transition: 'opacity 0.2s'
                     }}
-                    onMouseEnter={(e) => e.target.style.opacity = '0.7'}
-                    onMouseLeave={(e) => e.target.style.opacity = '1'}
+                    className="download-brochure-link"
                   >
-                    View Brochure &rarr;
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    Brochure
                   </a>
                 )}
               </div>
-
             </div>
           </div>
         ))}
