@@ -2262,4 +2262,23 @@ button, input, select, textarea {
   }
 }
 
+/* ==========================================
+   SCROLL HIGHLIGHTING LEGAL CARDS
+   ========================================== */
+.legal-scroll-card {
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease !important;
+}
+
+.legal-scroll-card.active-highlight {
+  border-color: #2563EB !important;
+  box-shadow: 0 8px 30px rgba(37, 99, 235, 0.08) !important;
+  transform: translateY(-2px);
+}
+
+.tech-tab-btn.active-outline {
+  border-color: #2563EB !important;
+  background-color: #F0F5FD !important;
+  color: #2563EB !important;
+}
+
 

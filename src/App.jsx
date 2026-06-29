@@ -10,6 +10,8 @@ import Contact from './pages/Contact';
 import Blog from './pages/Blog';
 import Careers from './pages/Careers';
 import Logs from './pages/Logs';
+import PrivacyPolicy from './pages/DataPolicy';
+import TermsConditions from './pages/TermsConditions';
 import BackgroundDecorations from './components/BackgroundDecorations';
 import ChatAssistant from './components/ChatAssistant';
 import './App.css';
@@ -79,6 +81,8 @@ function App() {
         <Route path="/blog" element={<div className="page-container"><Blog /></div>} />
         <Route path="/careers" element={<div className="page-container"><Careers /></div>} />
         <Route path="/logs" element={<div className="page-container"><Logs /></div>} />
+        <Route path="/privacy-policy" element={<div className="page-container"><PrivacyPolicy /></div>} />
+        <Route path="/terms-conditions" element={<div className="page-container"><TermsConditions /></div>} />
       </Routes>
       <Footer />
     </HashRouter>
