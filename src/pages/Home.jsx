@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
-import Marquee from '../components/Marquee';
 import Timeline from '../components/Timeline';
 import Ecosystem from '../components/Ecosystem';
 import InteractiveBlueprint from '../components/InteractiveBlueprint';
@@ -12,7 +11,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Marquee />
       <Timeline />
       
       {/* Dynamic Ecosystem Platform Segment */}

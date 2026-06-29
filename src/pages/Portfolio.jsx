@@ -16,15 +16,14 @@ export default function Portfolio() {
       )
     },
     {
-      title: "InterviewXpert Hiring Platform",
-      desc: "Enabled companies to conduct automated technical interviews with faster hiring decisions, standardized assessments, live coding compilation, and recruiter dashboards.",
-      tags: ["AI Assessments", "Real-Time WebSockets", "React.js Interface", "Docker Sandbox"],
-      demo: "#",
-      brochure: "/brochure/Brocher-interviewxpert.pdf",
+      title: "NotaryXpert SaaS",
+      desc: "A specialized SaaS platform digitizing legal documentation and notary operations. Modernizes legal drafting to reduce paperwork latency by up to 90% using automated PDF generation and IOT fingerprint authentications.",
+      tags: ["React.js", "PHP Backend", "MySQL", "IOT Fingerprint Integration"],
+      demo: "https://notery.interviewxpert.in/",
       icon: (
         <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#09543F" strokeWidth="1.5">
-          <circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       )
     },
@@ -32,12 +31,15 @@ export default function Portfolio() {
       title: "AI Powered Interview Platform",
       desc: "An advanced, remote technical screening platform designed to assess engineering candidates. Conducts real-time evaluations, video question feedback, coding assessment parsing, and automated ranking metrics.",
       tags: ["Gemini API", "AssemblyAI", "React JS", "Firebase", "Cloudinary"],
-      demo: "#",
+      demo: "https://interviewxpert.in",
+      brochure: "/brochure/Brocher-interviewxpert.pdf",
       github: "#",
       icon: (
-        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#09543F" strokeWidth="1.5">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+        <img 
+          src="/brochure/logo-dark.png" 
+          alt="InterviewXpert Logo" 
+          style={{ height: '48px', width: 'auto', objectFit: 'contain' }} 
+        />
       )
     },
     {
@@ -122,6 +124,8 @@ export default function Portfolio() {
                 {proj.demo && (
                   <a 
                     href={proj.demo} 
+                    target={proj.demo.startsWith('http') ? "_blank" : undefined}
+                    rel={proj.demo.startsWith('http') ? "noopener noreferrer" : undefined}
                     style={{ 
                       fontSize: '0.8rem', 
                       color: '#09543F', 
