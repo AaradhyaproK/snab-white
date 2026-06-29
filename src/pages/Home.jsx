@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
+import Marquee from '../components/Marquee';
 import Timeline from '../components/Timeline';
+import Ecosystem from '../components/Ecosystem';
 import InteractiveBlueprint from '../components/InteractiveBlueprint';
 import Testimonials from '../components/Testimonials';
 import FAQ from '../components/FAQ';
@@ -10,7 +12,11 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <Marquee />
       <Timeline />
+      
+      {/* Dynamic Ecosystem Platform Segment */}
+      <Ecosystem />
       
       {/* Interactive Architecture Simulator */}
       <InteractiveBlueprint />

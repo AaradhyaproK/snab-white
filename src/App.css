@@ -701,6 +701,31 @@ button, input, select, textarea {
   line-height: 1.5;
 }
 
+.scoring-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.scoring-tags .tag {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.25s ease;
+}
+
+.portfolio-card:hover .scoring-tags .tag {
+  border-color: rgba(9, 84, 63, 0.18);
+  background-color: var(--color-accent-light);
+  color: #09543F;
+}
+
 /* ==========================================
    WHY CHOOSE US
    ========================================== */
@@ -2152,6 +2177,22 @@ button, input, select, textarea {
   }
   100% {
     transform: translate3d(-33.333%, 0, 0);
+  }
+}
+
+/* ==========================================
+   HERO ENTRANCE STAGGERED REVEALS
+   ========================================== */
+.hero-reveal {
+  opacity: 0;
+  transform: translate3d(0, 32px, 0);
+  animation: hero-reveal-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes hero-reveal-up {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 

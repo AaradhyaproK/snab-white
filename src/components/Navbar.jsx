@@ -1,17 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logoImg from '../assets/snab-nobg.png';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalScroll <= 0) {
+        setScrollProgress(0);
+        return;
+      }
+      const progress = (window.pageYOffset / totalScroll) * 100;
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
-      <header className={`navbar ${isMenuOpen ? 'mobile-active' : ''}`}>
+      <header className={`navbar ${isMenuOpen ? 'mobile-active' : ''}`} style={{ position: 'fixed', width: '100%', top: 0, left: 0 }}>
         <div className="navbar-container">
           <Link to="/" className="logo" aria-label="SNAB Innovations Home" onClick={() => setIsMenuOpen(false)}>
             <img src={logoImg} className="logo-icon" alt="SNAB Innovations Logo" width="32" height="32" style={{ objectFit: 'contain' }} />
-            <span className="logo-text" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>snab</span>
+            <span 
+              className="logo-text" 
+              style={{ 
+                textTransform: 'uppercase', 
+                letterSpacing: '0.05em',
+                fontWeight: '900',
+                display: 'inline-flex'
+              }}
+            >
+              {"snab".split("").map((char, idx) => {
+                const thresholds = [15, 40, 65, 90];
+                const isLit = scrollProgress >= thresholds[idx];
+                return (
+                  <span 
+                    key={idx} 
+                    style={{ 
+                      color: isLit ? '#2563EB' : 'var(--color-text-main)',
+                      transition: 'color 0.35s cubic-bezier(0.25, 0.8, 0.25, 1)'
+                    }}
+                  >
+                    {char}
+                  </span>
+                );
+              })}
+            </span>
           </Link>
           
           <nav className="nav-menu">

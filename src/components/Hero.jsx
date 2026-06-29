@@ -7,15 +7,44 @@ export default function Hero() {
     <section className="hero" style={{ padding: '140px 0 60px' }}>
       {/* Top Half: Header Branding & CTAs */}
       <div className="hero-container" style={{ textAlign: 'center', margin: '0 auto', maxWidth: '850px', padding: '0 24px' }}>
-        <span className="hero-tag">Build Smarter. Scale Faster.</span>
-        <h1 className="hero-title" style={{ fontSize: 'clamp(2.5rem, 6.5vw, 4.5rem)', lineHeight: '1.1', marginBottom: '24px' }}>
+        <span 
+          className="hero-tag hero-reveal" 
+          style={{ animationDelay: '100ms' }}
+        >
+          Build Smarter. Scale Faster.
+        </span>
+        <h1 
+          className="hero-title hero-reveal" 
+          style={{ 
+            fontSize: 'clamp(2.5rem, 6.5vw, 4.5rem)', 
+            lineHeight: '1.1', 
+            marginBottom: '24px',
+            animationDelay: '250ms'
+          }}
+        >
           Innovate Without <span className="green-text">Limits.</span>
         </h1>
-        <p className="hero-subheading" style={{ margin: '0 auto 40px', maxWidth: '720px', fontSize: 'clamp(1.1rem, 2vw, 1.3rem)' }}>
+        <p 
+          className="hero-subheading hero-reveal" 
+          style={{ 
+            margin: '0 auto 40px', 
+            maxWidth: '720px', 
+            fontSize: 'clamp(1.1rem, 2vw, 1.3rem)',
+            animationDelay: '400ms'
+          }}
+        >
           SNAB Innovations helps startups, businesses, and enterprises transform ideas into powerful digital products through AI, software development, cloud solutions, DevOps, and technology consulting.
         </p>
 
-        <div className="hero-actions" style={{ justifyContent: 'center', gap: '16px', marginBottom: '40px' }}>
+        <div 
+          className="hero-actions hero-reveal" 
+          style={{ 
+            justifyContent: 'center', 
+            gap: '16px', 
+            marginBottom: '40px',
+            animationDelay: '550ms'
+          }}
+        >
           <Link to="/contact" className="btn btn-primary" style={{ padding: '14px 28px' }}>
             Book Consultation <span className="arrow-right">→</span>
           </Link>
@@ -26,14 +55,17 @@ export default function Hero() {
       </div>
 
       {/* Edge-to-Edge Animated Infinite Marquee Ticker */}
-      <div style={{ margin: '20px 0 40px' }}>
+      <div 
+        className="hero-reveal" 
+        style={{ margin: '20px 0 40px', animationDelay: '700ms' }}
+      >
         <Marquee />
       </div>
 
       {/* Bottom Half: Testimonial Badge */}
       <div className="hero-container" style={{ textAlign: 'center', margin: '0 auto', maxWidth: '850px', padding: '0 24px' }}>
         <div 
-          className="hero-testimonial glass-card" 
+          className="hero-testimonial glass-card hero-reveal" 
           style={{ 
             display: 'inline-flex', 
             alignItems: 'center',
@@ -43,7 +75,8 @@ export default function Hero() {
             border: '1px solid var(--color-border)',
             boxShadow: '0 4px 20px var(--color-shadow)',
             textAlign: 'left',
-            maxWidth: '640px'
+            maxWidth: '640px',
+            animationDelay: '850ms'
           }}
         >
           <div className="testimonial-avatar-wrapper" style={{ flexShrink: 0 }}>
