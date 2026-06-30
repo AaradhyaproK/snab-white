@@ -90,6 +90,10 @@ export default function Admin() {
   const [authError, setAuthError] = useState('');
   const [activeTab, setActiveTab] = useState('projects');
 
+  React.useEffect(() => {
+    document.title = "CMS Console | SNAB Innovations";
+  }, []);
+
   // Form edit states
   const [editingId, setEditingId] = useState(null);
   const [successMsg, setSuccessMsg] = useState('');

@@ -17,6 +17,7 @@ export default function PrivacyPolicy() {
   ];
 
   useEffect(() => {
+    document.title = "Privacy Policy | SNAB Innovations";
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

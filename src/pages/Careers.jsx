@@ -118,6 +118,10 @@ export default function Careers() {
   const [isApplying, setIsApplying] = useState(false);
   const [applyError, setApplyError] = useState('');
 
+  React.useEffect(() => {
+    document.title = "Careers & Openings | SNAB Innovations";
+  }, []);
+
   // Form states
   const [applicantName, setApplicantName] = useState('');
   const [applicantEmail, setApplicantEmail] = useState('');

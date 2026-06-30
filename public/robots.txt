@@ -1,0 +1,10 @@
+# Allow all search engines to crawl and index the site
+User-agent: *
+Allow: /
+
+# Exclude sensitive routes from indexing
+Disallow: /admin/secure
+
+# Sitemap link
+Sitemap: https://snab-innovations.web.app/sitemap.xml
+Sitemap: https://snab-innovations.firebaseapp.com/sitemap.xml

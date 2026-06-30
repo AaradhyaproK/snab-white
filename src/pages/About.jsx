@@ -47,6 +47,10 @@ export default function About() {
   const { data: whyChooseUs } = useCollection("why_choose_us", DEFAULT_WHY_CHOOSE_US);
   const { data: accolades } = useCollection("accolades", DEFAULT_ACCOLADES);
 
+  React.useEffect(() => {
+    document.title = "About Us | SNAB Innovations";
+  }, []);
+
   return (
     <>
       {/* Standard About Component */}

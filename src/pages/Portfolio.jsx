@@ -106,6 +106,10 @@ const renderProjectIcon = (iconType) => {
 export default function Portfolio() {
   const { data: projects } = useCollection("projects", DEFAULT_PROJECTS);
 
+  React.useEffect(() => {
+    document.title = "Our Portfolio | SNAB Innovations";
+  }, []);
+
   return (
     <section className="portfolio-section" id="portfolio">
       <div className="section-title-wrapper" style={{ marginBottom: '56px', textAlign: 'center' }}>

@@ -228,6 +228,10 @@ const techLogos = {
 export default function Services() {
   const [activeTab, setActiveTab] = useState('frontend');
 
+  React.useEffect(() => {
+    document.title = "Our Services | SNAB Innovations";
+  }, []);
+
   const techCategories = {
     frontend: {
       label: "Frontend",

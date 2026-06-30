@@ -7,6 +7,10 @@ export default function Contact() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
+  React.useEffect(() => {
+    document.title = "Contact Us | SNAB Innovations";
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);

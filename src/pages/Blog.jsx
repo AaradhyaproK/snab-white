@@ -132,6 +132,10 @@ export default function Blog() {
   const [readingPost, setReadingPost] = useState(null);
   const { data: posts } = useCollection("blogs", DEFAULT_POSTS);
 
+  React.useEffect(() => {
+    document.title = "Articles & Blogs | SNAB Innovations";
+  }, []);
+
   const filteredPosts = activeTab === 'all' 
     ? posts 
     : posts.filter(post => post.category === activeTab);

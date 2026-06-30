@@ -17,6 +17,7 @@ export default function TermsConditions() {
   ];
 
   useEffect(() => {
+    document.title = "Terms & Conditions | SNAB Innovations";
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

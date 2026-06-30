@@ -17,6 +17,10 @@ const DEFAULT_INDUSTRIES = [
 export default function Home() {
   const { data: industries } = useCollection("industries", DEFAULT_INDUSTRIES);
 
+  React.useEffect(() => {
+    document.title = "SNAB Innovations | Custom Software & AI Solutions";
+  }, []);
+
   return (
     <>
       <Hero />
